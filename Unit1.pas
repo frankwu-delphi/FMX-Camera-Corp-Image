@@ -9,18 +9,18 @@ uses
   FMX.Layouts, FMX.ExtCtrls, FMX.Controls.Presentation, System.Actions,
   FMX.ActnList, FMX.ScrollBox, FMX.Memo,
 
-  System.Permissions,  // ĞèÒªÒıÈë
-  System.Messaging, // ĞèÒªÒıÈë
+  System.Permissions,  // éœ€è¦å¼•å…¥
+  System.Messaging, // éœ€è¦å¼•å…¥
 
-  Androidapi.JNI.Net, // ĞèÒªÒıÈë
-  Androidapi.JNI.GraphicsContentViewText, // ĞèÒªÒıÈë
-  Androidapi.JNI.JavaTypes, // ĞèÒªÒıÈë
-  Androidapi.Helpers, // ĞèÒªÒıÈë
-  Androidapi.JNI.App, // ĞèÒªÒıÈë
+  Androidapi.JNI.Net, // éœ€è¦å¼•å…¥
+  Androidapi.JNI.GraphicsContentViewText, // éœ€è¦å¼•å…¥
+  Androidapi.JNI.JavaTypes, // éœ€è¦å¼•å…¥
+  Androidapi.Helpers, // éœ€è¦å¼•å…¥
+  Androidapi.JNI.App, // éœ€è¦å¼•å…¥
 
-  FMX.Objects, // ĞèÒªÒıÈë
-  FMX.StdActns, // ĞèÒªÒıÈë
-  FMX.MediaLibrary.Actions; // ĞèÒªÒıÈë
+  FMX.Objects, // éœ€è¦å¼•å…¥
+  FMX.StdActns, // éœ€è¦å¼•å…¥
+  FMX.MediaLibrary.Actions; // éœ€è¦å¼•å…¥
 
 type
   TForm1 = class(TForm)
@@ -47,10 +47,10 @@ type
     { Public declarations }
     procedure GetCropImage;
 
-    // Activity½á¹ûÊÂ¼ş
+    // Activityç»“æœäº‹ä»¶
     function OnActivityResult(RequestCode, ResultCode: Integer;
       Data: JIntent): Boolean;
-    // ÏûÏ¢½á¹û´¦Àí
+    // æ¶ˆæ¯ç»“æœå¤„ç†
     procedure HandleActivityMessage(const Sender: TObject; const M: TMessage);
   end;
 
@@ -81,7 +81,7 @@ const
 var
   LUri: Jnet_Uri;
 
-{$REGION '¶¯Ì¬À­È¨ÏŞ'}
+{$REGION 'åŠ¨æ€æ‹‰æƒé™'}
 
   // Optional rationale display routine to display permission requirement rationale to the user
 procedure TForm1.DisplayRationale(Sender: TObject;
@@ -130,8 +130,8 @@ end;
 
 procedure TForm1.FormCreate(Sender: TObject);
 begin
-  Memo1.Lines.Add('Ö»Õë¶Ô Android 8.0 ²âÊÔ');
-  Memo1.Lines.Add('»ªÎª Mate8.0 + Android 8.0 ²âÊÔÍ¨¹ı');
+  Memo1.Lines.Add('åªé’ˆå¯¹ Android 8.0 æµ‹è¯•');
+  Memo1.Lines.Add('åä¸º Mate8.0 + Android 8.0 æµ‹è¯•é€šè¿‡');
   // Model name
   Memo1.Lines.Add(JStringToString(TJBuild.JavaClass.MODEL));
   // Os Version
@@ -139,7 +139,7 @@ begin
 
 end;
 
-// ÏûÏ¢½á¹û´¦Àí
+// æ¶ˆæ¯ç»“æœå¤„ç†
 procedure TForm1.HandleActivityMessage(const Sender: TObject;
 const M: TMessage);
 begin
@@ -186,7 +186,7 @@ begin
     IMAGE_TAKEPHOTO_FILENAME;
   LDestFileName := TPath.GetDownloadsPath + PathDelim +
     IMAGE_TAKEPHOTO_FILENAME;
-  TFile.Copy(LFileName, LDestFileName, True); // ¸´ÖÆÍ¼Æ¬µ½Ö¸¶¨Ä¿Â¼
+  TFile.Copy(LFileName, LDestFileName, True); // å¤åˆ¶å›¾ç‰‡åˆ°æŒ‡å®šç›®å½•
 
   Intent := TJIntent.Create;
   if TJBuild_VERSION.JavaClass.SDK_INT >= TJBuild_VERSION_CODES.JavaClass.N then
@@ -206,32 +206,32 @@ begin
     (StringToJString('file://' + System.IOUtils.TPath.GetPublicPath + PathDelim
     + IMAGE_CROP_FILENAME));
 
-  // µ÷ÓÃÏµÍ³µÄ²ÃÇĞ ACTION
+  // è°ƒç”¨ç³»ç»Ÿçš„è£åˆ‡ ACTION
   Intent.setAction(StringToJString('com.android.camera.action.CROP'));
   Intent.setDataAndType(LData, StringToJString('image/*'));
 
-  // ÉèÖÃ²Ã¼ô
+  // è®¾ç½®è£å‰ª
   Intent.putExtra(StringToJString('crop'), True);
 
-  // aspectX aspectY ÊÇ¿í¸ßµÄ±ÈÀı
+  // aspectX aspectY æ˜¯å®½é«˜çš„æ¯”ä¾‹
   Intent.putExtra(StringToJString('aspectX'), 1);
   Intent.putExtra(StringToJString('aspectY'), 1);
 
-  // outputX outputY ÊÇ²Ã¼ôÍ¼Æ¬¿í¸ß
+  // outputX outputY æ˜¯è£å‰ªå›¾ç‰‡å®½é«˜
   Intent.putExtra(StringToJString('outputX'), 350);
   Intent.putExtra(StringToJString('outputY'), 350);
 
   Intent.putExtra(TJMediaStore.JavaClass.EXTRA_OUTPUT,
     TJParcelable.Wrap((LUri as ILocalObject).GetObjectID));
 
-  // True:·µ»ØdataÓòÊı¾İ JBitmap£¬False£ºÖ»·µ»Øuri
-  // True ÔÚ´ó³ß´çÊ±ÉÁÍË¡£¡£¡£
+  // True:è¿”å›dataåŸŸæ•°æ® JBitmapï¼ŒFalseï¼šåªè¿”å›uri
+  // True åœ¨å¤§å°ºå¯¸æ—¶é—ªé€€ã€‚ã€‚ã€‚
   Intent.putExtra(StringToJString('return-data'), False);
 
   // Intent.putExtra(StringToJString('outputFormat'),
   // TJBitmap_CompressFormat.JavaClass.JPEG.toString);
 
-  // È¡ÏûÈËÁ³Ê¶±ğ
+  // å–æ¶ˆäººè„¸è¯†åˆ«
   // Intent.putExtra(StringToJString('noFaceDetection'), True);
 
   try
@@ -245,7 +245,7 @@ begin
   end;
 end;
 
-// Activity ½á¹ûÊÂ¼ş
+// Activity ç»“æœäº‹ä»¶
 function TForm1.OnActivityResult(RequestCode, ResultCode: Integer;
 Data: JIntent): Boolean;
 var
@@ -258,46 +258,46 @@ begin
     FMessageSubscriptionID);
   FMessageSubscriptionID := 0;
 
-  // ÅĞ¶Ï×Ô¶¨ÒåÇëÇó´úÂë
+  // åˆ¤æ–­è‡ªå®šä¹‰è¯·æ±‚ä»£ç 
   if RequestCode = Image_Crop_Code then
   begin
-    Memo1.Lines.Add('½ÓÊÕÊı¾İ');
-    // Èç¹û°´ÁËÈ·¶¨
+    Memo1.Lines.Add('æ¥æ”¶æ•°æ®');
+    // å¦‚æœæŒ‰äº†ç¡®å®š
     if ResultCode = TJActivity.JavaClass.RESULT_OK then
     begin
-      // ÊÇ·ñÓĞÊı¾İ
+      // æ˜¯å¦æœ‰æ•°æ®
       if Assigned(Data) then
       begin
-        Memo1.Lines.Add('ÓĞÊı¾İ£¬½«ÒªÈ¥½âÎö');
-        // ½âÎö³öÊı¾İ
+        Memo1.Lines.Add('æœ‰æ•°æ®ï¼Œå°†è¦å»è§£æ');
+        // è§£æå‡ºæ•°æ®
         try
           JBmp := TJBitmapFactory.JavaClass.decodeStream(
           // TAndroidHelper.Context.getContentResolver.openInputStream(LUri)
           TAndroidHelper.ContentResolver.openInputStream(LUri));
 
-          Memo1.Lines.Add('²ÃÇĞÍ¼Æ¬µÄ´óĞ¡(W/H)£º ' + JBmp.getWidth.ToString + 'x' +
-            JBmp.getHeight.ToString + ' ÏñËØ');
+          Memo1.Lines.Add('è£åˆ‡å›¾ç‰‡çš„å¤§å°(W/H)ï¼š ' + JBmp.getWidth.ToString + 'x' +
+            JBmp.getHeight.ToString + ' åƒç´ ');
 
           BitmapSurface := TBitmapSurface.Create;
           JBitmapToSurface(JBmp, BitmapSurface);
           Imgprofile.Fill.Bitmap.Bitmap.Assign(BitmapSurface);
           BitmapSurface.Free;
 
-          Memo1.Lines.Add('»ñÈ¡²Ã¼ôÍ¼Æ¬Íê³É');
+          Memo1.Lines.Add('è·å–è£å‰ªå›¾ç‰‡å®Œæˆ');
         except
           on E: Exception do
           begin
-            Memo1.Lines.Add('OOooop!·µ»Ø½á¹ûÊ±´íÎó£º' + E.Message);
+            Memo1.Lines.Add('OOooop!è¿”å›ç»“æœæ—¶é”™è¯¯ï¼š' + E.Message);
           end;
         end;
       end;
     end
     else if ResultCode = TJActivity.JavaClass.RESULT_CANCELED then
     begin
-      Memo1.Lines.Add('°´ÁËÈ¡Ïû');
+      Memo1.Lines.Add('æŒ‰äº†å–æ¶ˆ');
     end;
-    Result := True;
   end;
+    Result := True;  
 end;
 
 end.
