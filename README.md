@@ -8,7 +8,7 @@ Editable := True
 已经有人在 QC 中汇报了：
 https://quality.embarcadero.com/browse/RSP-23206
 
-这次演示没有只演示调用摄像头拍照后，裁剪，返回裁剪后的图片。
+这次演示只演示调用摄像头拍照后，裁剪，返回裁剪后的图片。
 
 测试平台：
 华为 Mate8 + Android8.0
