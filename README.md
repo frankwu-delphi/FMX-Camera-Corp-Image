@@ -5,7 +5,7 @@ FMX.MediaLibrary.Actions.TTakePhotoFromCameraAction
 Editable := True
 在 DidFInishTaking 将不能返回裁剪后的图片，
 
-已经有人在 QC 中汇报了：
+详细情况请参见 QC 汇报：
 https://quality.embarcadero.com/browse/RSP-23206
 
 这次演示只演示调用摄像头拍照后，裁剪，返回裁剪后的图片。
